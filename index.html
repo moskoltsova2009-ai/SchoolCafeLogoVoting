@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Голосование за логотипы</title>
+    <style>
+        :root {
+            --bright-red: #ff1744;
+            --bright-blue: #2962ff;
+            --bright-green: #76ff03;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --text-secondary: #666;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .voting-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            max-width: 1200px;
+            margin-bottom: 30px;
+        }
+
+        .logo-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 25px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .logo-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            background-color: #fafafa;
+        }
+
+        .vote-controls {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .vote-btn {
+            background-color: var(--bright-blue);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            width: 100%;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(41, 98, 255, 0.3);
+        }
+
+        .vote-btn:hover {
+            background-color: #1e4bd1;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(41, 98, 255, 0.4);
+        }
+
+        .vote-btn.voted {
+            background-color: var(--bright-red);
+            cursor: default;
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(255, 23, 68, 0.3);
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--bright-green);
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 10px;
+        }
+
+        .vote-count {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            min-height: 22px;
+        }
+
+        .like-icon {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        @media (max-width: 768px) {
+            .voting-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .logo-card {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Выберите лучший логотип</h1>
+
+    <div class="voting-container">
+
+        <!-- ЛОГОТИП 1 -->
+        <div class="logo-card" id="logo-1">
+            <img src="images/zoo.jpg" alt="Логотип 1" class="logo-image">
+            
+            <div class="vote-controls">
+                <button class="vote-btn" onclick="vote(this, 'logo-1')">
+                    <svg class="like-icon" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    Проголосовать
+                </button>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%"></div>
+                </div>
+                <span class="vote-count">0 голосов</span>
+            </div>
+        </div>
+
+        <!-- ЛОГОТИП 2 -->
+        <div class="logo-card" id="logo-2">
+            <img src="images/traf.jpg" alt="Логотип 2" class="logo-image">
+            
+            <div class="vote-controls">
+                <button class="vote-btn" onclick="vote(this, 'logo-2')">
+                    <svg class="like-icon" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    Проголосовать
+                </button>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%"></div>
+                </div>
+                <span class="vote-count">0 голосов</span>
+            </div>
+        </div>
+
+        <!-- ЛОГОТИП 3 -->
+        <div class="logo-card" id="logo-3">
+            <img src="images/girl.jpg" alt="Логотип 3" class="logo-image">
+            
+            <div class="vote-controls">
+                <button class="vote-btn" onclick="vote(this, 'logo-3')">
+                    <svg class="like-icon" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    Проголосовать
+                </button>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%"></div>
+                </div>
+                <span class="vote-count">0 голосов</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getDatabase, 
+            ref, 
+            onValue, 
+            update, 
+            increment,
+            set
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // ⚠️ ЗАМЕНИТЕ НА ВАШИ ДАННЫЕ ИЗ FIREBASE CONSOLE
+        const firebaseConfig = {
+            apiKey: "AIzaSyAEenmzBe-jVRDccXfO1AtlMVTZTbd0FtM",
+  authDomain: "myvote-c7ba2.firebaseapp.com",
+  databaseURL: "https://myvote-c7ba2-default-rtdb.firebaseio.com",
+  projectId: "myvote-c7ba2",
+  storageBucket: "myvote-c7ba2.firebasestorage.app",
+  messagingSenderId: "715529995023",
+  appId: "1:715529995023:web:01fc25dcd3306e19e0347a"
+};
+
+        // Инициализация Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Глобальные переменные
+        window.votesData = {};
+        window.db = db;
+
+        // Обновление интерфейса
+        window.updateUI = function() {
+            const totalVotes = Object.values(window.votesData).reduce((a, b) => a + b, 0);
+
+            for (let id in window.votesData) {
+                const card = document.getElementById(id);
+                if (!card) continue;
+
+                const currentVotes = window.votesData[id];
+                const progressBar = card.querySelector('.progress-bar');
+                const countText = card.querySelector('.vote-count');
+
+                let percentage = 0;
+                if (totalVotes > 0) {
+                    percentage = (currentVotes / totalVotes) * 100;
+                }
+
+                progressBar.style.width = percentage + '%';
+                
+                if (currentVotes === 0) {
+                    countText.textContent = '0 голосов';
+                } else {
+                    countText.textContent = `${currentVotes} голосов (${Math.round(percentage)}%)`;
+                }
+            }
+        }
+
+        // Функция голосования
+        window.vote = async function(btnElement, logoId) {
+            // Проверка: проголосовал ли уже пользователь
+            if (localStorage.getItem('hasVoted')) {
+                alert('Вы уже проголосовали!');
+                return;
+            }
+
+            try {
+                const voteRef = ref(db, 'votes/' + logoId);
+                
+                // Увеличиваем счётчик в Firebase
+                await update(voteRef, {
+                    count: increment(1)
+                });
+                
+                console.log(`Голос за ${logoId} сохранён`);
+                
+            } catch (error) {
+                console.error("Ошибка при сохранении голоса:", error);
+                alert("Не удалось сохранить голос.");
+                return;
+            }
+
+            // Сохраняем факт голосования
+            localStorage.setItem('hasVoted', 'true');
+            localStorage.setItem('votedFor', logoId);
+
+            // Обновляем кнопку
+            btnElement.classList.add('voted');
+            btnElement.innerHTML = 'Голос принят!';
+            
+            document.querySelectorAll('.vote-btn').forEach(btn => {
+                if (btn !== btnElement) {
+                    btn.style.opacity = '0.5';
+                    btn.style.pointerEvents = 'none';
+                }
+            });
+        }
+
+        // Подписка на изменения в реальном времени
+        function initRealtimeListener() {
+            const votesRef = ref(db, 'votes');
+            
+            onValue(votesRef, (snapshot) => {
+                const data = snapshot.val();
+                
+                if (data) {
+                    window.votesData = {
+                        'logo-1': data['logo-1']?.count || 0,
+                        'logo-2': data['logo-2']?.count || 0,
+                        'logo-3': data['logo-3']?.count || 0
+                    };
+                } else {
+                    window.votesData = {
+                        'logo-1': 0,
+                        'logo-2': 0,
+                        'logo-3': 0
+                    };
+                    set(votesRef, {
+                        'logo-1': { count: 0 },
+                        'logo-2': { count: 0 },
+                        'logo-3': { count: 0 }
+                    });
+                }
+                
+                window.updateUI();
+            });
+        }
+
+        // Инициализация
+        function init() {
+            const hasVoted = localStorage.getItem('hasVoted');
+            
+            if (hasVoted) {
+                document.querySelectorAll('.vote-btn').forEach(btn => {
+                    btn.classList.add('voted');
+                    btn.innerHTML = 'Вы проголосовали';
+                    btn.style.pointerEvents = 'none';
+                    btn.style.opacity = '0.5';
+                });
+            }
+
+            initRealtimeListener();
+            console.log('Система голосования инициализирована');
+        }
+
+        init();
+    </script>
+</body>
+</html>
